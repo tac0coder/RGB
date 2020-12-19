@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="stye.lcss" rel="stylesheet" type="text/css" />
+  </head>
+  <body id=color>
+<script>
+function HEXtoRGB(hex) {
+    hex = hex.replace(/#/g, '');
+    if (hex.length === 3) {
+        hex = hex.split('').map(function (hex) {
+            return hex + hex;
+        }).join('');
+    }
+    var result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})[\da-z]{0,0}$/i.exec(hex);
+    if (result) {
+        var red = parseInt(result[1], 16);
+        var green = parseInt(result[2], 16);
+        var blue = parseInt(result[3], 16);
+
+        return [red, green, blue];
+    } else {
+        return null;
+    }
+}
+
+function RGBtoHEX(rgb) {
+    rgb = rgb.match(/^rgba?\(\s?(\d+),?\s?(\d+),?\s?(\d+),?\s?\/?\s?(\d?\.?\d+|\d+)%?\)$/i);
+    let hex = ''; 
+    if(rgb) {
+      var red = rgb[1] < 0 ? 0 : rgb[1] > 255 ? 255: rgb[1];
+      var green = rgb[2] < 0 ? 0 : rgb[2] > 255 ? 255: rgb[2];
+      var blue = rgb[3] < 0 ? 0 : rgb[3] > 255 ? 255: rgb[3];
+
+      hex = "#" +
+      ("0" + parseInt(red, 10).toString(16)).slice(-2) +
+      ("0" + parseInt(green, 10).toString(16)).slice(-2) +
+      ("0" + parseInt(blue, 10).toString(16)).slice(-2)
+    }
+    return hex;
+}
+</script>
+<p>R,G,B</p>
+<input type=range id=r min=0 max=255>
+
+
+
+<input type=range id=g min=0 max=255>
+<input type=range id=b min=0 max=255>
+
+<p>HTML:</p>
+<input type=color id=html>
+
+<div style='' id='colordiv'>R:128 G:128 B:128</div>
+<br>
+<script>
+  var r=document.getElementById('r')
+  var g=document.getElementById('g')
+  var b=document.getElementById('b')
+  var r_vals=document.getElementById('val')
+  var html=document.getElementById('html')
+  var colordiv=document.getElementById('colordiv')
+  var color = document.getElementById('color')
+  color.style['height'] = screen.height.toString()+'px'
+  r.oninput = function(){
+    color.style['background-color'] = `rgb(${r.value},${g.value},${b.value})`
+    colordiv.innerHTML=`R:${r.value} G:${g.value} B:${b.value}`
+    html.value=RGBtoHEX(`${r.value}${g.value}${b.value}`)
+  }
+  b.oninput = function(){
+    color.style['background-color'] = `rgb(${r.value},${g.value},${b.value})`
+    colordiv.innerHTML=`R:${r.value} G:${g.value} B:${b.value}`
+    html.value=RGBtoHEX(`${r.value}${g.value}${b.value}`)
+     
+  }
+  g.oninput = function(){
+    color.style['background-color'] = `rgb(${r.value},${g.value},${b.value})`
+    colordiv.innerHTML=`R:${r.value} G:${g.value} B:${b.value}`
+    html.value=RGBtoHEX(`${r.value}${g.value}${b.value}`)
+    
+  }
+  html.oninput=function(){
+    color.style['background-color'] = html.value
+    colordiv.innerHTML=`R:${HEXtoRGB(html.value)[0]} G:${HEXtoRGB(html.value)[1]} B:${HEXtoRGB(html.value)[2]}`
+    r.value=HEXtoRGB(html.value)[0]
+    g.value=HEXtoRGB(html.value)[1]
+    b.value=HEXtoRGB(html.value)[2]
+
+  }
+
+</script>
+  </body>
+</html>
